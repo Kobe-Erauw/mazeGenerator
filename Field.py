@@ -26,8 +26,6 @@ class Field:
         self.makeWay(self.getCell(self.startPosition))
 
     def makeWay(self, cell: Cell):
-        self.itaration += 1
-        if self.itaration >= 10: return
         print(self.__str__())
         cell.isVisited = True
         unvisited = self.getUnvisitedNeighbours(cell)
@@ -66,10 +64,10 @@ class Field:
         self.player.cell = self.getCell(self.player.position)
 
     def setValue(self, position: Position, value: str):
-        if(not self.isValidPosition(position)):
-            print(f"Het is Ilegaal om [{position}] te betreden")
-            self.player.position = self.player.prevPosition
-            position = self.player.position
+        # if(not self.isValidPosition(position)):
+        #     print(f"Het is Ilegaal om [{position}] te betreden")
+        #     self.player.position = self.player.prevPosition
+        #     position = self.player.position
         self.field[self.sizeY - position.y - 1][position.x].value = value
 
     def getCell(self, position: Position) -> Cell:
@@ -93,6 +91,7 @@ class Field:
                 return Direction.Up
             case Direction.Left:
                 return Direction.Right
+        return None
 
     def __str__(self):
         string = ""

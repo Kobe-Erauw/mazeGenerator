@@ -14,4 +14,4 @@ class Cell:
         self.isVisited = False
 
     def __str__(self):
-        return f"Cell[{str(self.position)}]"
+        return f"Cell[{str(self.position)}] {self.walls}"

@@ -19,6 +19,7 @@ while True:
             pl.move(Direction.Right)
         case "q":
             pl.move(Direction.Left)
-    print(f"pos     [{pl.position}]\nprevPos [{pl.prevPosition}]")
     field.update()
+    print(f"pos     [{pl.position}]\nprevPos [{pl.prevPosition}]")
+    print(f"current cell: {pl.cell}")
     print(field)
