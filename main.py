@@ -23,3 +23,6 @@ while True:
             pl.move(Direction.Left)
     field.update()
     print(field)
+    if pl.position == field.destination:
+        print("Bravo")
+        break
