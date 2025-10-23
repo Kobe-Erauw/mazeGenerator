@@ -12,6 +12,7 @@ class Field:
     def __init__(self, sizeX: int = 5, sizeY: int = 5, player: Player = Player(), startPosition: Position = Position()):
         self.sizeX = sizeX
         self.sizeY = sizeY
+        self.destination = Position(sizeX - 1, sizeY - 1)
         self.field = self.generateBlankField(sizeX, sizeY)
         self.player = Player(startPosition, self.getCell(startPosition))
         self.startPosition = startPosition
@@ -25,14 +26,16 @@ class Field:
                 field[y].append(Cell(Position(x, y)))
         return field
 
-    def generateMaze(self):
+    def generateMaze(self, animDuration: float):
         with Live(self.__str__(), console=self.console, refresh_per_second=10) as live:
-            self.makeWay(self.getCell(self.startPosition), live)
+            self.makeWay(self.getCell(self.startPosition), live, animDuration)
+            live.update("")
+        self.setValue(self.destination, "#")
 
-    def makeWay(self, cell: Cell, live: Live):
+    def makeWay(self, cell: Cell, live: Live, animDuration: float):
         cell.isVisited = True
         live.update(self.__str__())
-        sleep(10 / (self.sizeX * self.sizeY))
+        sleep(animDuration / (self.sizeX * self.sizeY))
         unvisited = self.getUnvisitedNeighbours(cell)
         unvisitedKeys = list(unvisited.keys())
         shuffle(unvisitedKeys)
@@ -40,7 +43,7 @@ class Field:
             if not unvisited[key].isVisited:
                 cell.walls[key] = False
                 unvisited[key].walls[self.getOppositDirection(key)] = False
-                self.makeWay(unvisited[key], live)
+                self.makeWay(unvisited[key], live, animDuration)
 
     def getUnvisitedNeighbours(self, cell: Cell):
         unvisited = {}
