@@ -19,9 +19,9 @@ class Player:
         self.prevPosition = Position(self.position.x, self.position.y)
         match direction:
             case Direction.Up:
-                self.position.y += 1
-            case Direction.Down:
                 self.position.y -= 1
+            case Direction.Down:
+                self.position.y += 1
             case Direction.Left:
                 self.position.x -= 1
             case Direction.Right:

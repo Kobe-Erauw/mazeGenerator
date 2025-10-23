@@ -52,8 +52,8 @@ class Field:
     def getNeiggbours(self, cell: Cell):
         neighbours = {}
         position = cell.position
-        neighbours[Direction.Up] = self.getCellOrNone(Position(position.x, position.y + 1))
-        neighbours[Direction.Down] = self.getCellOrNone(Position(position.x, position.y - 1))
+        neighbours[Direction.Up] = self.getCellOrNone(Position(position.x, position.y - 1))
+        neighbours[Direction.Down] = self.getCellOrNone(Position(position.x, position.y + 1))
         neighbours[Direction.Right] = self.getCellOrNone(Position(position.x + 1, position.y))
         neighbours[Direction.Left] = self.getCellOrNone(Position(position.x - 1, position.y))
         return neighbours
@@ -68,13 +68,13 @@ class Field:
         #     print(f"Het is Ilegaal om [{position}] te betreden")
         #     self.player.position = self.player.prevPosition
         #     position = self.player.position
-        self.field[self.sizeY - position.y - 1][position.x].value = value
+        self.getCell(position).value = value
 
     def getCell(self, position: Position) -> Cell:
         return self.field[position.y][position.x]
 
     def getCellOrNone(self, position: Position):
-        if(self.isValidPosition(position)):
+        if self.isValidPosition(position):
             return self.getCell(position)
         return None
 
@@ -95,14 +95,15 @@ class Field:
 
     def __str__(self):
         string = ""
-        for y in self.field:
+        for y in range(self.sizeY):
             underline = ""
-            for cell in y:
-                if(cell.walls[Direction.Down]):
+            for x in range(self.sizeX):
+                cell = self.getCell(Position(x, y))
+                if cell.walls[Direction.Down]:
                     underline += "― "
                 else:
                     underline += "  "
-                if(cell.walls[Direction.Right]):
+                if cell.walls[Direction.Right]:
                     string += f"{cell.value}|"
                 else:
                     string += f"{cell.value} "
