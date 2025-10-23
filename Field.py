@@ -12,7 +12,6 @@ class Field:
         self.field = self.generateBlankField(sizeX, sizeY)
         self.player = Player(startPosition, self.getCell(startPosition))
         self.startPosition = startPosition
-        self.itaration = 0
 
     def generateBlankField(self, sizeX: int, sizeY: int):
         field = []
@@ -32,9 +31,11 @@ class Field:
         unvisitedKeys = list(unvisited.keys())
         shuffle(unvisitedKeys)
         for key in unvisitedKeys:
-            cell.walls[key] = False
-            unvisited[key].walls[self.getOppositDirection(key)] = False
-            self.makeWay(unvisited[key])
+            if not unvisited[key].isVisited\
+                    :
+                cell.walls[key] = False
+                unvisited[key].walls[self.getOppositDirection(key)] = False
+                self.makeWay(unvisited[key])
 
     def getUnvisitedNeighbours(self, cell: Cell):
         unvisited = {}
@@ -59,7 +60,7 @@ class Field:
         return neighbours
 
     def setPlayerPosition(self):
-        self.setValue(self.player.prevPosition, "0")
+        self.setValue(self.player.prevPosition, " ")
         self.setValue(self.player.position, "X")
         self.player.cell = self.getCell(self.player.position)
 
