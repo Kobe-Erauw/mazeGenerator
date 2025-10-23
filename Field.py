@@ -1,4 +1,7 @@
 from random import shuffle
+from time import sleep
+from rich.console import Console
+from rich.live import Live
 
 from Cell import Cell
 from Player import Player
@@ -12,6 +15,7 @@ class Field:
         self.field = self.generateBlankField(sizeX, sizeY)
         self.player = Player(startPosition, self.getCell(startPosition))
         self.startPosition = startPosition
+        self.console = Console()
 
     def generateBlankField(self, sizeX: int, sizeY: int):
         field = []
@@ -22,33 +26,33 @@ class Field:
         return field
 
     def generateMaze(self):
-        self.makeWay(self.getCell(self.startPosition))
+        with Live(self.__str__(), console=self.console, refresh_per_second=10) as live:
+            self.makeWay(self.getCell(self.startPosition), live)
 
-    def makeWay(self, cell: Cell):
-        print(self.__str__())
+    def makeWay(self, cell: Cell, live: Live):
         cell.isVisited = True
+        live.update(self.__str__())
+        sleep(0.1)
         unvisited = self.getUnvisitedNeighbours(cell)
         unvisitedKeys = list(unvisited.keys())
         shuffle(unvisitedKeys)
         for key in unvisitedKeys:
-            if not unvisited[key].isVisited\
-                    :
+            if not unvisited[key].isVisited:
                 cell.walls[key] = False
                 unvisited[key].walls[self.getOppositDirection(key)] = False
-                self.makeWay(unvisited[key])
+                self.makeWay(unvisited[key], live)
 
     def getUnvisitedNeighbours(self, cell: Cell):
         unvisited = {}
         neighbours = self.getNeiggbours(cell)
         for dir, neig in neighbours.items():
-            if(not neig): continue
-            if(not neig.isVisited):
+            if not neig: continue
+            if not neig.isVisited:
                 unvisited[dir] = neig
         return unvisited
 
     def isValidPosition(self, position: Position):
         return not (position.x < 0 or position.x >= self.sizeX or position.y < 0 or position.y >= self.sizeY)
-
 
     def getNeiggbours(self, cell: Cell):
         neighbours = {}
@@ -65,10 +69,6 @@ class Field:
         self.player.cell = self.getCell(self.player.position)
 
     def setValue(self, position: Position, value: str):
-        # if(not self.isValidPosition(position)):
-        #     print(f"Het is Ilegaal om [{position}] te betreden")
-        #     self.player.position = self.player.prevPosition
-        #     position = self.player.position
         self.getCell(position).value = value
 
     def getCell(self, position: Position) -> Cell:

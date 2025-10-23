@@ -2,7 +2,7 @@ from Position import Position, Direction
 
 
 class Cell:
-    def __init__(self, position: Position, value: str = "0"):
+    def __init__(self, position: Position, value: str = " "):
         self.walls = {
                 Direction.Up: True,
                 Direction.Right: True,
