@@ -2,13 +2,15 @@ from Field import Field
 from Player import Player
 from Position import Direction
 
-field = Field(5, 5, Player())
+sizeX = input("height     (#characters): ")
+sizeY = input("width      (#characters): ")
+duration =  input("animation duration (sec): ")
+field = Field(60, 30, Player())
 pl = field.player
-print(field)
 # field.getCell(Position(3,1)).walls = {Direction.Up: False, Direction.Right: False, Direction.Down: False, Direction.Left: False}
-field.generateMaze()
+field.generateMaze(duration)
+field.update()
 print(field)
-
 while True:
     match input("Direction: "):
         case "z":
@@ -20,6 +22,4 @@ while True:
         case "q":
             pl.move(Direction.Left)
     field.update()
-    print(f"pos     [{pl.position}]\nprevPos [{pl.prevPosition}]")
-    print(f"current cell: {pl.cell}")
     print(field)

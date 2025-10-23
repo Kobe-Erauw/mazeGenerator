@@ -32,7 +32,7 @@ class Field:
     def makeWay(self, cell: Cell, live: Live):
         cell.isVisited = True
         live.update(self.__str__())
-        sleep(0.1)
+        sleep(10 / (self.sizeX * self.sizeY))
         unvisited = self.getUnvisitedNeighbours(cell)
         unvisitedKeys = list(unvisited.keys())
         shuffle(unvisitedKeys)
@@ -95,9 +95,13 @@ class Field:
         return None
 
     def __str__(self):
-        string = ""
+        string = " "
+        for row in range(self.sizeX):
+            string += "― "
+        string += "\n"
         for y in range(self.sizeY):
-            underline = ""
+            string += "|"
+            underline = " "
             for x in range(self.sizeX):
                 cell = self.getCell(Position(x, y))
                 if cell.walls[Direction.Down]:
