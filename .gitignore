@@ -1,2 +1,3 @@
 .idea
 .MazeGenVenv
+__pycache__
